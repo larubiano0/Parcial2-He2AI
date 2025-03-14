@@ -46,8 +46,6 @@ El objetivo del proceso fue construir un único DataFrame que integrara tres fue
    3. Datos de Expectativa de Vida al Nacer, que enriquecen el análisis socioeconómico con indicadores de desarrollo humano.
 Además, se transformó el problema original de regresión (valor del PIB) en uno de clasificación, segmentando el PIB del año 2022 en tres categorías (bajo, medio y alto) mediante la aplicación de técnicas de transformación logarítmica y el cálculo de terciles. Se atendieron asimismo aspectos cruciales como la interpolación de datos faltantes, la codificación de variables categóricas y la división de los datos en conjuntos de entrenamiento y prueba.
 
-
-
 ## **Preguntas iniciales y problemas identificados**
 
 * Transformar el PIB en una variable categórica: El parcial requería convertir un valor continuo (PIB) en tres categorías (por ejemplo, alto, medio y bajo). Este cambio de paradigma implicaba revisar la forma de evaluar la precisión y requería planificar el preprocesamiento (normalización, logaritmos, etc.) para asegurar resultados consistentes.}
@@ -75,6 +73,28 @@ Además, se transformó el problema original de regresión (valor del PIB) en un
 **Proceso de Construcción y Optimización de los Modelos**
 
 + **Red neuronal tradicional (Scikit-Learn - Catalina)**: Inicialmente mostró una precisión baja (56%). se procedio a una búsqueda detallada de hiperparámetros usando GridSearchCV, destacando especialmente la importancia de las iteraciones y la cantidad de capas ocultas. Tras estos ajustes, alcanzamos finalmente una precisión del 86% en el conjunto de prueba.
+  **Modelo Base:**  
+  Se definió un MLPClassifier con los siguientes parámetros iniciales:  
+  - `hidden_layer_sizes=(50,)`
+  - `activation='logistic'` (función sigmoide)
+  - `solver='sgd'` (descenso de gradiente estocástico)
+  - `learning_rate='adaptive'`
+  - `max_iter=5000`
+  - `alpha=0.01`  
+  Con esta configuración, el modelo base alcanzó una precisión inicial del **56%** en el conjunto de prueba.
+  
+  **Optimización con GridSearchCV:**  
+  Se amplió la búsqueda de hiperparámetros probando las siguientes configuraciones:
+  - **hidden_layer_sizes:** [(50, 50), (50, 50, 50), (50, 50, 50, 50)]
+  - **alpha:** [0.0001, 0.01, 0.1]
+  - **max_iter:** [5000]
+  - **learning_rate:** ['constant', 'adaptive']
+  - **learning_rate_init:** [0.001, 0.01, 0.1]
+  - **activation:** ['logistic', 'tanh', 'relu']
+  - **solver:** ['sgd', 'adam', 'lbfgs']
+    
+  Tras la optimización, el mejor modelo obtenido mediante GridSearchCV alcanzó una precisión final del **86%** en el conjunto de prueba. Esta mejora significativa evidencia la importancia de ajustar cuidadosamente los hiperparámetros para el problema específico de clasificación del PIB.
+
 
 + **Red neuronal profunda (TensorFlow - Nicolás)**: Se desarrolló un modelo profundo utilizando TensorFlow y realizó una optimización exhaustiva con Keras Tuner. Nicolás definió una función para explorar múltiples configuraciones técnicas (capas ocultas, funciones de activación, dropout, regularización L2 y tasa de aprendizaje), realizando 10 iteraciones automáticas. La mejor configuración obtenida incluyó cuatro capas ocultas, función de activación ReLU, dropout moderado (0.2), regularización L2 leve y un learning rate de 0.01. Este proceso riguroso llevó a obtener finalmente una precisión del 74% en el conjunto de prueba.
 
