@@ -72,7 +72,7 @@ Además, se transformó el problema original de regresión (valor del PIB) en un
 
 * Selección de métricas de evaluación: Consideramos la precisión (accuracy) como la métrica principal de desempeño, complementándola con reportes de clasificación y curvas ROC.
 
-## **Proceso de Construcción y Optimización de los Modelos**
+**Proceso de Construcción y Optimización de los Modelos**
 
 + **Red neuronal tradicional (Scikit-Learn - Catalina)**: Inicialmente mostró una precisión baja (56%). se procedio a una búsqueda detallada de hiperparámetros usando GridSearchCV, destacando especialmente la importancia de las iteraciones y la cantidad de capas ocultas. Tras estos ajustes, alcanzamos finalmente una precisión del 86% en el conjunto de prueba.
 
