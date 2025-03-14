@@ -36,13 +36,19 @@ A continuación, se describen los modelos de redes neuronales implementados en e
 
 - **GDP_script.ipynb**: El script principal para ejecutar todos los modelos y evaluar su rendimiento.
 - **README.md**: Este archivo que estás leyendo.
-- 
+- **Análisis modelo-IA.pdf**:Este PDF tiene el todo el análisis de resultados.
    
 # 📖 Relatoria 
 
-Cronología del desarrollo
+El objetivo del proceso fue construir un único DataFrame que integrara tres fuentes de datos relevantes para el análisis económico:
+   1. Datos del PIB mundial (World GDP Data), con registros históricos desde 1960 hasta 2022.
+   2. Información geográfica y de clasificación (country_codes), que añade a cada país datos sobre región e ingreso.
+   3. Datos de Expectativa de Vida al Nacer, que enriquecen el análisis socioeconómico con indicadores de desarrollo humano.
+Además, se transformó el problema original de regresión (valor del PIB) en uno de clasificación, segmentando el PIB del año 2022 en tres categorías (bajo, medio y alto) mediante la aplicación de técnicas de transformación logarítmica y el cálculo de terciles. Se atendieron asimismo aspectos cruciales como la interpolación de datos faltantes, la codificación de variables categóricas y la división de los datos en conjuntos de entrenamiento y prueba.
 
-**Preguntas iniciales y problemas identificados**
+
+
+## **Preguntas iniciales y problemas identificados**
 
 * Transformar el PIB en una variable categórica: El parcial requería convertir un valor continuo (PIB) en tres categorías (por ejemplo, alto, medio y bajo). Este cambio de paradigma implicaba revisar la forma de evaluar la precisión y requería planificar el preprocesamiento (normalización, logaritmos, etc.) para asegurar resultados consistentes.}
 
@@ -54,7 +60,7 @@ Cronología del desarrollo
 
 * Integración de un nuevo dataset de expectativa de vida: Decidimos agregar la variable de expectativa de vida para cumplir con el bono propuesto y darle mayor riqueza al análisis. esto exigió más coherencia temporal y más ajustes en la limpieza de datos.
 
-**Soluciones y conclusiones a las que llegamos**
+## **Soluciones y conclusiones a las que llegamos**
 
 * Interpolación y promedio para missing values: Luego de discutir eliminar datos incompletos, concluimos que era mejor conservar la mayor cantidad de información posible. Adoptamos la interpolación lineal seguida de un promedio para rellenar vacíos. Esta estrategia nos permitió reducir la pérdida de datos sin afectar drásticamente su distribución.
 
@@ -66,15 +72,34 @@ Cronología del desarrollo
 
 * Selección de métricas de evaluación: Consideramos la precisión (accuracy) como la métrica principal de desempeño, complementándola con reportes de clasificación y curvas ROC.
 
-Conclusiones clave: El manejo de los datos resultó fundamental para el desarrollo. Aprendimos que la estructura temporal es crítica y que la imputación adecuada de datos faltantes, acompañada de normalización y codificación correctas, facilita modelos más robustos.
-
-**Proceso de Construcción y Optimización de los Modelos**
+## **Proceso de Construcción y Optimización de los Modelos**
 
 + **Red neuronal tradicional (Scikit-Learn - Catalina)**: Inicialmente mostró una precisión baja (56%). se procedio a una búsqueda detallada de hiperparámetros usando GridSearchCV, destacando especialmente la importancia de las iteraciones y la cantidad de capas ocultas. Tras estos ajustes, alcanzamos finalmente una precisión del 86% en el conjunto de prueba.
 
 + **Red neuronal profunda (TensorFlow - Nicolás)**: Se desarrolló un modelo profundo utilizando TensorFlow y realizó una optimización exhaustiva con Keras Tuner. Nicolás definió una función para explorar múltiples configuraciones técnicas (capas ocultas, funciones de activación, dropout, regularización L2 y tasa de aprendizaje), realizando 10 iteraciones automáticas. La mejor configuración obtenida incluyó cuatro capas ocultas, función de activación ReLU, dropout moderado (0.2), regularización L2 leve y un learning rate de 0.01. Este proceso riguroso llevó a obtener finalmente una precisión del 74% en el conjunto de prueba.
 
 + **Modelo mal configurado**: Implementamos intencionalmente un modelo incorrecto utilizando MLPRegressor con una función de pérdida diseñada para regresión (cuadrática), en lugar de una función apropiada para clasificación (como cross-entropy). Además, utilizamos un learning rate excesivamente alto, lo cual causó problemas serios de convergencia. Esta configuración errónea resultó en una precisión extremadamente baja (33%), demostrando claramente la importancia técnica crítica de elegir adecuadamente tanto la función de pérdida como el learning rate según la tarea específica (clasificación en este caso).
+  
+## **Cronología** 
+
+- **Inicio del Proyecto (12 de marzo):**  
+  Se realizó la primera reunión en la que se definieron los objetivos y se asignaron las tareas iniciales. En esta sesión, se discutió la necesidad de transformar el problema de regresión en clasificación y se acordó trabajar con el PIB y la expectativa de vida.
+
+- **Fase de Preprocesamiento (12-13 de marzo):**  
+  Se abordó la transformación del dataset de PIB:  
+  - Se aplicó el pivot y la reorganización del dataset.  
+  - Se integró la información geográfica a través del merge con *country_codes.csv*.  
+  - Se eliminaron registros incompletos para asegurar la calidad de los datos.  
+  Paralelamente, se inició la integración del dataset de expectativa de vida, lo que requirió coordinar la estructura temporal de ambas fuentes.
+
+- **Fase de Modelado (13-14 de marzo):**  
+  Se desarrollaron tres modelos de redes neuronales:  
+  - La **Red Neuronal Tradicional** se implementó y optimizó usando GridSearchCV.  
+  - La **Red Neuronal Profunda** se configuró en TensorFlow con Keras Tuner para explorar diversas arquitecturas.  
+  - Se creó un **modelo mal configurado** para evaluar el impacto de parámetros inadecuados, lo que permitió evidenciar la importancia de una correcta selección de la función de pérdida y la tasa de aprendizaje.
+
+- **Fase de Evaluación y Documentación (13-14 de marzo):**  
+  Se realizaron análisis comparativos mediante métricas como accuracy, matriz de confusión, F1-score y curvas ROC. Además, se aplicaron SHAP Values para interpretar la importancia de las variables. Finalmente, se compiló la relatoría y se documentó todo el proceso en el README.
 
 ## **División del trabajo** 
 Todos los integrantes conocen y ejecutaron de manera independiente el codigo del proyecto. Sin embargo, cada uno lideró una tarea distinta
